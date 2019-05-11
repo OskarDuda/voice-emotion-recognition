@@ -1,0 +1,76 @@
+data_dirs:
+  - 'Data/Audio_Song_Actors_01-24'
+  - 'Data/Audio_Speech_Actors_01-24'
+cached_data_path: 'Data/Preprocessed/data_preprocessed.pkl'
+model_path: 'Models/model.pkl'
+flags:
+  always_build_new_model: False
+  cache_new_model: True
+  always_preprocess_data: False
+  cache_preprocessed_data: True
+randomized_search_params:
+  param_distributions:
+    max_depth:
+      - 3
+      - 4
+      - 5
+      - 6
+    learning_rate:
+      - 0.3333333333333333
+      - 0.1111111111111111
+      - 0.037037037037037035
+      - 0.012345679012345678
+      - 0.00411522633744856
+      - 0.0013717421124828531
+      - 0.0004572473708276177
+      - 0.00015241579027587258
+      - 3
+      - 1.0
+      - 0.3333333333333333
+      - 0.1111111111111111
+      - 0.037037037037037035
+      - 0.01234567901234568
+      - 0.004115226337448559
+      - 0.0013717421124828531
+      - 0.0004572473708276178
+    min_child_weight:
+      - 1
+      - 2
+      - 3
+      - 4
+    gamma:
+      - 0.0
+      - 0.10000000000000009
+      - 0.2100000000000002
+      - 0.3310000000000004
+      - 0.4641000000000004
+      - 0.6105100000000006
+      - 0.7715610000000008
+      - 0.9487171000000012
+      - 1.1435888100000016
+      - 1.357947691000002
+      - 1.5937424601000023
+      - 1.8531167061100025
+      - 2.138428376721003
+      - 2.452271214393104
+      - 2.7974983358324144
+  verbose: 2
+  n_iter: 100
+  n_jobs: 2
+default_model_params:
+  n_estimators: 200
+  max_depth: 6
+  learning_rate: 0.04
+  gamma: 1.36
+  silent: False
+  verbose: 3
+emotion_to_predict: 'happy'
+emotion_ids_all:
+  neutral: 1
+  calm: 2
+  happy: 3
+  sad: 4
+  angry: 5
+  fearful: 6
+  disgust: 7
+  surprised: 8
