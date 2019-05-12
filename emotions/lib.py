@@ -116,10 +116,9 @@ def get_data(n_features, folders, preprocessed_folder, always_preprocess_data=Fa
 def fun_call_by_name(val):
     if '.' in val:
         module_name, fun_name = val.rsplit('.', 1)
-        # you should restrict which modules may be loaded here
-        assert module_name.startswith('my.')
+        assert module_name.startswith('scipy')
     else:
-        module_name = '__main__'
+        module_name = 'emotions.lib'
         fun_name = val
     __import__(module_name)
     module = sys.modules[module_name]
@@ -129,15 +128,16 @@ def fun_call_by_name(val):
 
 def parse_random_search_params(**params):
     '''
-    Parses randomized search parameters taken from configs.yml. List parameters are passed over unchanged, string
+    Parses randomized search parameters taken from configurations yaml. List parameters are passed over unchanged, dictionary
     parameters are replace with corresponding functions.
     '''
     dist_params = params['param_distributions']
-    for dist_param in dist_params.keys():
-        if isinstance(dist_param, list):
+    for key in dist_params.keys():
+        if isinstance(dist_params[key], list):
             pass
-        elif isinstance(dist_param, str):
-            params['param_distributions'][dist_param] = fun_call_by_name(dist_param)
+        elif isinstance(dist_params[key], dict):
+            params['param_distributions'][key] = fun_call_by_name(dist_params[key]['function_name'])(
+                                                                  **dist_params[key]['parameters'])
     return params
 
 
@@ -148,8 +148,13 @@ def build_new_model(X_train, y_train, default_model_params, search_params):
     return searcher.best_estimator_
 
 
-def get_model(X_train, y_train, model_path, search_params, default_model_params, cache_new_model=True,
-              always_build_new_model=False):
+def get_model(X_train, y_train, configs):
+    model_path = configs['model_path']
+    search_params = parse_random_search_params(**configs['randomized_search_params'])
+    default_model_params = configs['default_model_params']
+    cache_new_model = configs['flags']['cache_new_model']
+    always_build_new_model = configs['flags']['always_build_new_model']
+
     cached_model_exists = os.path.isfile(model_path)
     model_should_be_built = not cached_model_exists or always_build_new_model
     if model_should_be_built:
@@ -163,3 +168,10 @@ def get_model(X_train, y_train, model_path, search_params, default_model_params,
     return model
 
 
+if __name__ == '__main__':
+    import yaml
+    configs_file = 'default_configs.yml'
+    with open(configs_file, 'r') as f:
+        configs = yaml.load(f, Loader=yaml.SafeLoader)
+
+    p = parse_random_search_params(**configs['randomized_search_params'])

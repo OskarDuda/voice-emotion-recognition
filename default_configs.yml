@@ -16,23 +16,10 @@ randomized_search_params:
       - 5
       - 6
     learning_rate:
-      - 0.3333333333333333
-      - 0.1111111111111111
-      - 0.037037037037037035
-      - 0.012345679012345678
-      - 0.00411522633744856
-      - 0.0013717421124828531
-      - 0.0004572473708276177
-      - 0.00015241579027587258
-      - 3
-      - 1.0
-      - 0.3333333333333333
-      - 0.1111111111111111
-      - 0.037037037037037035
-      - 0.01234567901234568
-      - 0.004115226337448559
-      - 0.0013717421124828531
-      - 0.0004572473708276178
+      function_name: 'scipy.stats.halfnorm'
+      parameters:
+        scale: 0.3
+        loc: 0
     min_child_weight:
       - 1
       - 2
@@ -64,7 +51,6 @@ default_model_params:
   gamma: 1.36
   silent: False
   verbose: 3
-emotion_to_predict: 'happy'
 emotion_ids_all:
   neutral: 1
   calm: 2
@@ -74,3 +60,4 @@ emotion_ids_all:
   fearful: 6
   disgust: 7
   surprised: 8
+emotion_to_predict: 'happy'
